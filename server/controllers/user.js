@@ -3,6 +3,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import sendMail, { sendForgotMail } from "../middlewares/sendMail.js";
 import TryCatch from "../middlewares/TryCatch.js";
+import dotenv from "dotenv";
+
+
+dotenv.config();
+
+
+
 
 export const register = TryCatch(async (req, res) => {
   const { email, name, password } = req.body;
@@ -29,7 +36,7 @@ export const register = TryCatch(async (req, res) => {
       user,
       otp,
     },
-    process.env.Activation_Secret,
+    process.env.JWT_SECRET,
     {
       expiresIn: "5m",
     }
@@ -51,7 +58,7 @@ export const register = TryCatch(async (req, res) => {
 export const verifyUser = TryCatch(async (req, res) => {
   const { otp, activationToken } = req.body;
 
-  const verify = jwt.verify(activationToken, process.env.Activation_Secret);
+  const verify = jwt.verify(activationToken, process.env.JWT_SECRET);
 
   if (!verify)
     return res.status(400).json({
