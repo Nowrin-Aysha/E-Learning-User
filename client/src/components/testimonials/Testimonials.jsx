@@ -5,7 +5,7 @@ const Testimonials = () => {
   const testimonialsData = [
     {
       id: 1,
-      name: "John Doe",
+      name: "Famnas",
       position: "Student",
       message:
         "This platform helped me learn so effectively. The courses are amazing and the instructors are top-notch.",
@@ -14,7 +14,7 @@ const Testimonials = () => {
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Nowrin ",
       position: "Student",
       message:
         "I've learned more here than in any other place. The interactive lessons and quizzes make learning enjoyable.",
@@ -23,7 +23,7 @@ const Testimonials = () => {
     },
     {
       id: 3,
-      name: "John Doe",
+      name: "Jaisal",
       position: "Student",
       message:
         "This platform helped me learn so effectively. The courses are amazing and the instructors are top-notch.",
@@ -32,7 +32,7 @@ const Testimonials = () => {
     },
     {
       id: 4,
-      name: "Jane Smith",
+      name: "Unaisa",
       position: "Student",
       message:
         "I've learned more here than in any other place. The interactive lessons and quizzes make learning enjoyable.",
