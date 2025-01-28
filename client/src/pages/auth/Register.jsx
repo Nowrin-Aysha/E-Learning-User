@@ -8,12 +8,21 @@ const Register = () => {
   const { btnLoading, registerUser } = UserData();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
   const [name, setName] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    // Validate password and confirm password
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
     await registerUser(name, email, password, navigate);
   };
+
   return (
     <div className="auth-page">
       <div className="auth-form">
@@ -43,12 +52,20 @@ const Register = () => {
             required
           />
 
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+
           <button type="submit" disabled={btnLoading} className="common-btn">
             {btnLoading ? "Please Wait..." : "Register"}
           </button>
         </form>
         <p>
-          have an account? <Link to="/login">Login</Link>
+          Have an account? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>
