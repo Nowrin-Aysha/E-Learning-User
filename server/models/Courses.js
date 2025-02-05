@@ -34,6 +34,18 @@ const schema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
+  rejectionNote: {
+    type: String,
+    default: "",
+  },
+},
+{ timestamps: true 
+
 });
 
 export const Courses = mongoose.model("Courses", schema);

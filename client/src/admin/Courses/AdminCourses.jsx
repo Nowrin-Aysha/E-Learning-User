@@ -30,6 +30,7 @@ const AdminCourses = ({ user }) => {
   const [image, setImage] = useState("");
   const [imagePrev, setImagePrev] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
+  const [rejectionNote, setRejectionNote] = useState("");
 
   const changeImageHandler = (e) => {
     const file = e.target.files[0];
@@ -82,6 +83,50 @@ const AdminCourses = ({ user }) => {
     }
   };
 
+  const handleApprove = async (courseId) => {
+    try {
+      const { data } = await axios.put(
+        `${server}/api/course/approve/${courseId}`,
+        {},
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      toast.success(data.message);
+      await fetchCourses();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleReject = async (courseId) => {
+    if (!rejectionNote) {
+      toast.error("Please provide a rejection note");
+      return;
+    }
+
+    try {
+      const { data } = await axios.put(
+        `${server}/api/course/reject/${courseId}`,
+        { rejectionNote },
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      toast.success(data.message);
+      await fetchCourses();
+      setRejectionNote("");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <Layout>
       <div className="admin-courses">
@@ -90,7 +135,32 @@ const AdminCourses = ({ user }) => {
           <div className="dashboard-content">
             {courses && courses.length > 0 ? (
               courses.map((e) => {
-                return <CourseCard key={e._id} course={e} />;
+                return (
+                  <div key={e._id}>
+                    <CourseCard course={e} />
+                    {user.role === "superadmin" && e.status === "pending" && (
+                      <div>
+                        <button
+                          onClick={() => handleApprove(e._id)}
+                          className="common-btn"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => handleReject(e._id)}
+                          className="common-btn"
+                        >
+                          Reject
+                        </button>
+                        <textarea
+                          placeholder="Rejection Note"
+                          value={rejectionNote}
+                          onChange={(e) => setRejectionNote(e.target.value)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
               })
             ) : (
               <p>No Courses Yet</p>
